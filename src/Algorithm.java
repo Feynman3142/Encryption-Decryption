@@ -2,16 +2,25 @@ import java.io.*;
 
 abstract class Algorithm {
 
+    /**
+     * Encryption method that reads from a file and prints to an output stream (file or System.out)
+     * @param reader BufferedReader object to read from a file
+     * @param writer PrintWriter to read to a file or System.out
+     * @throws IOException throws IOException
+     */
     private void encryptFile(BufferedReader reader, PrintWriter writer) throws IOException {
         while (reader.ready()) {
             String msg = reader.readLine();
-            System.out.println(msg);
             String encMsg = encryptMsg(msg);
-            System.out.println(encMsg);
             writer.println(encMsg);
         }
     }
 
+    /**
+     * Wrapper encryption method that prints to System.out
+     * @param path path to the input file to read from
+     * @throws IOException throws IOException
+     */
     void encryptFile(String path) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             PrintWriter writer = new PrintWriter(System.out);
@@ -21,6 +30,12 @@ abstract class Algorithm {
         }
     }
 
+    /**
+     * Wrapper encryption method that writes to a file
+     * @param inPath path to the input file to read from
+     * @param outPath path to the output file to write to
+     * @throws IOException throws IOException
+     */
     void encryptFile(String inPath, String outPath) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(inPath))) {
             try (PrintWriter writer = new PrintWriter(outPath)) {
@@ -33,6 +48,12 @@ abstract class Algorithm {
         }
     }
 
+    /**
+     * Decryption method that reads from a file and prints to an output stream (file or System.out)
+     * @param reader BufferedReader object to read from a file
+     * @param writer PrintWriter to read to a file or System.out
+     * @throws IOException throws IOException
+     */
     private void decryptFile(BufferedReader reader, PrintWriter writer) throws IOException {
         while (reader.ready()) {
             String msg = reader.readLine();
@@ -41,6 +62,11 @@ abstract class Algorithm {
         }
     }
 
+    /**
+     * Wrapper decryption method that prints to System.out
+     * @param path path to the input file to read from
+     * @throws IOException throws IOException
+     */
     void decryptFile(String path) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             PrintWriter writer = new PrintWriter(System.out);
@@ -50,6 +76,12 @@ abstract class Algorithm {
         }
     }
 
+    /**
+     * Wrapper encryption method that writes to a file
+     * @param inPath path to the input file to read from
+     * @param outPath path to the output file to write to
+     * @throws IOException throws IOException
+     */
     void decryptFile(String inPath, String outPath) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(inPath))) {
             try (PrintWriter writer = new PrintWriter(outPath)) {
@@ -62,14 +94,29 @@ abstract class Algorithm {
         }
     }
 
+    /**
+     * Abstract method allowing different methods for encryption
+     * @param msg String to be encrypted
+     * @return Encrypted string
+     */
     public abstract String encryptMsg(String msg);
+
+    /**
+     * Abstract method allowing different methods for decryption
+     * @param msg String to be decrypted
+     * @return Decrypted string
+     */
     public abstract String decryptMsg(String msg);
 }
 
-class Config {
+class Config { // class to store configurations for different algorithms
 
     private int key;
 
+    /**
+     * Sets the key value for shift ciphers
+     * @param key the shift value which must be >= 0 else IllegalArgumentException is raised
+     */
     void setKey(int key) {
         if (key < 0) {
             throw new IllegalArgumentException(String.format("Error: key (%d) < 0\n", key));
@@ -78,13 +125,23 @@ class Config {
         }
     }
 
+    /**
+     * Returns the key value for shift ciphers
+     * @return the key (integer)
+     */
     int getKey() {
         return this.key;
     }
 }
 
-class SysFactory {
+class SysFactory { // static factory class to create instances of algorithm classes
 
+    /**
+     * static method to create instances of algorithm classes
+     * @param sys String indicating type of algorithm selected
+     * @param cfg Config object storing parameters for algorithm
+     * @return instance of class of selected algorithm
+     */
     static Algorithm createSystem(String sys, Config cfg) {
         switch (sys.toLowerCase()) {
             case "shift":
@@ -97,14 +154,23 @@ class SysFactory {
     }
 }
 
-class CaesarCipher extends Algorithm {
+class CaesarCipher extends Algorithm { // class that implements Caesar Cipher: encodes only letters of the English alphabet
 
     private int key;
 
+    /**
+     * Constructor for CaesarCipher class
+     * @param key shift value for encryption/decryption
+     */
     CaesarCipher(int key) {
         this.key = key;
     }
 
+    /**
+     * Overrides Algorithm method that shifts English letters to encrypt them
+     * @param msg String to be encrypted
+     * @return Encrypted string
+     */
     @Override
     public String encryptMsg(String msg) {
         if (msg.length() == 0) {
@@ -125,6 +191,11 @@ class CaesarCipher extends Algorithm {
         }
     }
 
+    /**
+     * Overrides Algorithm method that performs inverse of encryptMsg() method
+     * @param msg String to be decrypted
+     * @return Decrypted string
+     */
     @Override
     public String decryptMsg(String msg) {
         if (msg.length() == 0) {
@@ -148,14 +219,23 @@ class CaesarCipher extends Algorithm {
     }
 }
 
-class UnicodeCipher extends Algorithm {
+class UnicodeCipher extends Algorithm { // class that implements Caesar Cipher but shifts any Unicode character
 
     private int key;
 
+    /**
+     * Constructor for UnicodeCipher
+     * @param key shift value for encryption/decryption
+     */
     UnicodeCipher(int key) {
         this.key = key;
     }
 
+    /**
+     * Overrides Algorithm method to shift Unicode characters to encrypt them
+     * @param msg String to be encrypted
+     * @return Encrypted string
+     */
     @Override
     public String encryptMsg(String msg) {
         if (msg.length() == 0) {
@@ -170,6 +250,11 @@ class UnicodeCipher extends Algorithm {
         }
     }
 
+    /**
+     * Overrides Algorithm method to perform inverse of encryptMsg() method
+     * @param msg String to be decrypted
+     * @return Decrypted string
+     */
     @Override
     public String decryptMsg(String msg) {
         if (msg.length() == 0) {
