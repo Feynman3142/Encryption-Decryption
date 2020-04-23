@@ -10,6 +10,7 @@ Difficulty: Beginner
 
 ### Features
 * To be run on the command line.
+* Implements the Strategy Design Pattern.
 * Validation of user input at every point (*obviously included but it took me time so I'm mentioning it!*)
 
 ### Demonstration
