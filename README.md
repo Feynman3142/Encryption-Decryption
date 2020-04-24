@@ -27,8 +27,7 @@ Please note these options are case-sensitive. Other options that are passed will
 
 **Caution:** Using the extended Unicode version might cause the characters to be encrypted to non-printable characters.
 
-![Demo](https://drive.google.com/uc?export=view&id=1lx21cbnJIqGyD5p35JvUwHEjjEAvp_a3)
-
+![Demo](media/demo.jpg)
 
 ### Dependencies
 
